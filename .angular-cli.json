@@ -58,6 +58,31 @@
       }
     },
     {
+      "name": "tetrahedron",
+      "root": "apps/tetrahedron/src",
+      "outDir": "dist/apps/tetrahedron",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "../../../test.js",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "../../../tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
       "name": "septangle",
       "root": "libs/septangle/src",
       "test": "../../../test.js",
@@ -99,6 +124,14 @@
     },
     {
       "project": "apps/site-io/e2e/tsconfig.e2e.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "apps/tetrahedron/src/tsconfig.app.json",
+      "exclude": "**/node_modules/**"
+    },
+    {
+      "project": "apps/tetrahedron/e2e/tsconfig.e2e.json",
       "exclude": "**/node_modules/**"
     }
   ],
