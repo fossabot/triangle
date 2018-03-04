@@ -98,7 +98,7 @@ export class IconRegistry {
    * The default 'material-icons' value assumes that the material icon font has been loaded as
    * described at http://google.github.io/material-design-icons/#icon-font-for-the-web
    */
-  private _defaultFontSetClass = 'triangle-icons';
+  private _defaultFontSetClass = 'anticon';
 
   constructor(@Optional() private _httpClient: HttpClient,
               private _sanitizer: DomSanitizer,
