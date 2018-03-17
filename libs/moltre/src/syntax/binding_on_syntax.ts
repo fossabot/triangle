@@ -1,19 +1,18 @@
-import { interfaces } from "../interfaces/interfaces";
-import { BindingWhenSyntax } from "./binding_when_syntax";
+import { Binding } from '../bindings/binding';
+import { Context } from '../planning/context';
+import { BindingWhenSyntax } from './binding_when_syntax';
 
-class BindingOnSyntax<T> implements interfaces.BindingOnSyntax<T> {
+export class BindingOnSyntax<T> {
 
-    private _binding: interfaces.Binding<T>;
+    private _binding: Binding<T>;
 
-    public constructor(binding: interfaces.Binding<T>) {
+    public constructor(binding: Binding<T>) {
         this._binding = binding;
     }
 
-    public onActivation(handler: (context: interfaces.Context, injectable: T) => T): interfaces.BindingWhenSyntax<T> {
+    public onActivation(handler: (context: Context, injectable: T) => T): BindingWhenSyntax<T> {
         this._binding.onActivation = handler;
         return new BindingWhenSyntax<T>(this._binding);
     }
 
 }
-
-export { BindingOnSyntax };

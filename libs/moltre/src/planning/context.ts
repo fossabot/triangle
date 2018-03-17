@@ -1,15 +1,16 @@
-import { IContainer, IContext, Plan } from '../interfaces/interfaces';
-import { guid } from "../utils/guid";
+import { Container } from '../container/container';
+import { Plan } from '../interfaces/interfaces';
+import { guid } from '../utils/guid';
 
-export class Context implements IContext {
+export class Context{
 
     public guid: string;
-    public container: IContainer;
+    public container: Container;
     public plan: Plan;
     public currentRequest: Request;
 
     public constructor(
-        container: IContainer) {
+        container: Container) {
         this.guid = guid();
         this.container = container;
     }

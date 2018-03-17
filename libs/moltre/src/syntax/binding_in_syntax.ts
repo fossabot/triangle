@@ -1,4 +1,4 @@
-import { BindingScopeEnum } from "../constants/literal_types";
+import { BindingScopeEnum } from "../constants/literal-types";
 import { interfaces } from "../interfaces/interfaces";
 import { BindingWhenOnSyntax } from "./binding_when_on_syntax";
 

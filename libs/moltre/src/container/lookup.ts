@@ -1,4 +1,4 @@
-import * as ERROR_MSGS from "../constants/error_msgs";
+import * as ERROR_MSGS from "../constants/error-msgs";
 import { interfaces } from "../interfaces/interfaces";
 
 class Lookup<T extends interfaces.Clonable<T>> implements interfaces.Lookup<T> {

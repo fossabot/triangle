@@ -1,7 +1,7 @@
-import {Document} from './Document';
-import {DocCollection} from './DocCollection';
-import {Processor, ProcessorDef} from './Processor';
-import {Module, FactoryDef, TypeDef} from './Module';
+import {Document} from './document';
+import {DocCollection} from './doc-collection';
+import {Processor, ProcessorDef} from './processor';
+import {Module, FactoryDef, TypeDef} from './module';
 
 export type PackageRef = Package | string;
 

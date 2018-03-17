@@ -3,10 +3,8 @@ const _ = require('lodash');
 const di = require('di');
 const Q = require('q');
 
-import { Package, PackageRef } from './Package';
-import { Injector } from './Injector';
-import { Processor } from './Processor';
-import { processorValidationPackage } from './legacy-packages/processorValidation';
+import { Package, PackageRef } from './package';
+import { processorValidationPackage } from '@gradii/sparrow/legacy-packages';
 import { sortByDependency } from './util/dependency-sort';
 
 import { getInjectablesFactory } from './util/getInjectables';

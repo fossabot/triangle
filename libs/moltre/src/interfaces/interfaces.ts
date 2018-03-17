@@ -1,4 +1,6 @@
-import { AsyncContainerModule, ContainerModule } from '../container/container_module';
+import { Container } from '../container/container';
+import { Context } from '../planning/context';
+import { Request } from '../planning/request';
 
 export type BindingScope = "Singleton" | "Transient" | "Request";
 
@@ -86,7 +88,7 @@ export type ContextInterceptor = (context: IContext) => IContext;
 
 export interface IContext {
   guid: string;
-  container: IContainer;
+  container: Container;
   plan: Plan;
   currentRequest: Request;
 
@@ -105,7 +107,7 @@ export interface Metadata {
 }
 
 export interface Plan {
-  parentContext: IContext;
+  parentContext: Context;
   rootRequest: Request;
 }
 
@@ -125,20 +127,20 @@ export type ResolveRequestHandler = (request: Request) => any;
 
 export type RequestScope = Map<any, any> | null;
 
-export interface Request {
-  guid: string;
-  serviceIdentifier: ServiceIdentifier<any>;
-  parentContext: IContext;
-  parentRequest: Request | null;
-  childRequests: Request[];
-  target: Target;
-  bindings: IBinding<any>[];
-  requestScope: RequestScope;
-
-  addChildRequest(serviceIdentifier: ServiceIdentifier<any>,
-                  bindings: (IBinding<any> | IBinding<any>[]),
-                  target: Target): Request;
-}
+// export interface Request {
+//   guid: string;
+//   serviceIdentifier: ServiceIdentifier<any>;
+//   parentContext: IContext;
+//   parentRequest: Request | null;
+//   childRequests: Request[];
+//   target: Target;
+//   bindings: IBinding<any>[];
+//   requestScope: RequestScope;
+//
+//   addChildRequest(serviceIdentifier: ServiceIdentifier<any>,
+//                   bindings: (IBinding<any> | IBinding<any>[]),
+//                   target: Target): Request;
+// }
 
 export interface Target {
   guid: string;
@@ -173,51 +175,51 @@ export interface ContainerOptions {
   defaultScope?: BindingScope;
 }
 
-export interface IContainer {
-  guid: string;
-  parent: IContainer | null;
-  options: ContainerOptions;
-
-  bind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
-
-  rebind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
-
-  unbind(serviceIdentifier: ServiceIdentifier<any>): void;
-
-  unbindAll(): void;
-
-  isBound(serviceIdentifier: ServiceIdentifier<any>): boolean;
-
-  isBoundNamed(serviceIdentifier: ServiceIdentifier<any>, named: string | number | symbol): boolean;
-
-  isBoundTagged(serviceIdentifier: ServiceIdentifier<any>, key: string | number | symbol, value: any): boolean;
-
-  get<T>(serviceIdentifier: ServiceIdentifier<T>): T;
-
-  getNamed<T>(serviceIdentifier: ServiceIdentifier<T>, named: string | number | symbol): T;
-
-  getTagged<T>(serviceIdentifier: ServiceIdentifier<T>, key: string | number | symbol, value: any): T;
-
-  getAll<T>(serviceIdentifier: ServiceIdentifier<T>): T[];
-
-  resolve<T>(constructorFunction: Newable<T>): T;
-
-  load(...modules: ContainerModule[]): void;
-
-  loadAsync(...modules: AsyncContainerModule[]): Promise<void>;
-
-  unload(...modules: ContainerModule[]): void;
-
-  applyCustomMetadataReader(metadataReader: MetadataReader): void;
-
-  applyMiddleware(...middleware: Middleware[]): void;
-
-  snapshot(): void;
-
-  restore(): void;
-
-  createChild(): IContainer;
-}
+// export interface Container {
+//   guid: string;
+//   parent: Container | null;
+//   options: ContainerOptions;
+//
+//   bind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
+//
+//   rebind<T>(serviceIdentifier: ServiceIdentifier<T>): BindingToSyntax<T>;
+//
+//   unbind(serviceIdentifier: ServiceIdentifier<any>): void;
+//
+//   unbindAll(): void;
+//
+//   isBound(serviceIdentifier: ServiceIdentifier<any>): boolean;
+//
+//   isBoundNamed(serviceIdentifier: ServiceIdentifier<any>, named: string | number | symbol): boolean;
+//
+//   isBoundTagged(serviceIdentifier: ServiceIdentifier<any>, key: string | number | symbol, value: any): boolean;
+//
+//   get<T>(serviceIdentifier: ServiceIdentifier<T>): T;
+//
+//   getNamed<T>(serviceIdentifier: ServiceIdentifier<T>, named: string | number | symbol): T;
+//
+//   getTagged<T>(serviceIdentifier: ServiceIdentifier<T>, key: string | number | symbol, value: any): T;
+//
+//   getAll<T>(serviceIdentifier: ServiceIdentifier<T>): T[];
+//
+//   resolve<T>(constructorFunction: Newable<T>): T;
+//
+//   load(...modules: ContainerModule[]): void;
+//
+//   loadAsync(...modules: AsyncContainerModule[]): Promise<void>;
+//
+//   unload(...modules: ContainerModule[]): void;
+//
+//   applyCustomMetadataReader(metadataReader: MetadataReader): void;
+//
+//   applyMiddleware(...middleware: Middleware[]): void;
+//
+//   snapshot(): void;
+//
+//   restore(): void;
+//
+//   createChild(): Container;
+// }
 
 export type Bind = <T>(serviceIdentifier: ServiceIdentifier<T>) => BindingToSyntax<T>;
 

@@ -8,7 +8,7 @@
     "strictNullChecks": false,
     "importHelpers": true,
     "newLine": "lf",
-    "module": "es2015",
+    "module": "amd",
     "moduleResolution": "node",
     "outDir": "../../dist/packages/moltre",
     "rootDir": ".",

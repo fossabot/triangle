@@ -4,7 +4,7 @@ import { Context } from '../planning/context';
 import { Target } from '../planning/target';
 import { guid } from '../utils/guid';
 
-class Request {
+export class Request {
 
   public guid: string;
   public serviceIdentifier: ServiceIdentifier<any>;
@@ -49,5 +49,3 @@ class Request {
     return child;
   }
 }
-
-export { Request };

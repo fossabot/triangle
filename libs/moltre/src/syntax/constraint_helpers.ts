@@ -1,10 +1,12 @@
-import * as METADATA_KEY from "../constants/metadata_keys";
-import { interfaces } from "../interfaces/interfaces";
-import { Metadata } from "../planning/metadata";
+import { MetadataKeys } from '../constants/metadata-keys';
+import { ConstraintFunction } from '../interfaces/interfaces';
+import { Metadata } from '../planning/metadata';
+import { Request } from '../planning/request';
+import { Binding } from '../bindings/binding';
 
-const traverseAncerstors = (
-    request: interfaces.Request,
-    constraint: interfaces.ConstraintFunction
+export const traverseAncerstors = (
+    request: Request,
+    constraint: ConstraintFunction
 ): boolean => {
 
     const parent = request.parentRequest;
@@ -17,23 +19,23 @@ const traverseAncerstors = (
 
 // This helpers use currying to help you to generate constraints
 
-const taggedConstraint = (key: string | number | symbol) => (value: any) => {
+export const taggedConstraint = (key: string | number | symbol) => (value: any) => {
 
-    const constraint: interfaces.ConstraintFunction =  (request: interfaces.Request | null) =>
-        request !== null && request.target !== null && request.target.matchesTag(key)(value);
+    const constraint: ConstraintFunction =  (request: Request | null) =>
+        request !== null && request.target !== null && request.target.matchesTag(key as string)(value);
 
     constraint.metaData = new Metadata(key, value);
 
     return constraint;
 };
 
-const namedConstraint = taggedConstraint(METADATA_KEY.NAMED_TAG);
+export const namedConstraint = taggedConstraint(MetadataKeys.NAMED_TAG);
 
-const typeConstraint = (type: (Function | string)) => (request: interfaces.Request | null) => {
+export const typeConstraint = (type: (Function | string)) => (request: Request | null) => {
 
     // Using index 0 because constraints are applied
     // to one binding at a time (see Planner class)
-    let binding: interfaces.Binding<any> | null = null;
+    let binding: Binding<any> | null = null;
 
     if (request !== null) {
         binding = request.bindings[0];
@@ -48,5 +50,3 @@ const typeConstraint = (type: (Function | string)) => (request: interfaces.Reque
 
     return false;
 };
-
-export { traverseAncerstors, taggedConstraint, namedConstraint, typeConstraint };

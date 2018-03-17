@@ -1,6 +1,8 @@
-import { BindingScope, BindingType, IContext, FactoryCreator, Newable, ProviderCreator, ServiceIdentifier } from '../interfaces/interfaces';
-import { BindingTypeEnum } from "../constants/literal_types";
-import { guid } from "../utils/guid";
+import { BindingTypeEnum } from '../constants/literal-types';
+import { BindingScope, BindingType, ConstraintFunction, FactoryCreator, Newable, ProviderCreator, ServiceIdentifier } from '../interfaces/interfaces';
+import { Context } from '../planning/context';
+import { Request } from '../planning/request';
+import { guid } from '../utils/guid';
 
 export class Binding<T> {
 
@@ -22,7 +24,7 @@ export class Binding<T> {
   public cache: T | null;
 
   // Cache used to allow BindingType.DynamicValue bindings
-  public dynamicValue: ((context: IContext) => T) | null;
+  public dynamicValue: ((context: Context) => T) | null;
 
   // The scope mode to be used
   public scope: BindingScope;
@@ -37,10 +39,10 @@ export class Binding<T> {
   public provider: ProviderCreator<T> | null;
 
   // A constraint used to limit the contexts in which this binding is applicable
-  public constraint: (request: Request) => boolean;
+  public constraint: ConstraintFunction; // (request: Request) => boolean |
 
   // On activation handler (invoked just before an instance is added to cache and injected)
-  public onActivation: ((context: IContext, injectable: T) => T) | null;
+  public onActivation: ((context: Context, injectable: T) => T) | null;
 
   public constructor(serviceIdentifier: ServiceIdentifier<T>, scope: BindingScope) {
     this.guid = guid();

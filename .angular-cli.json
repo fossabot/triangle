@@ -68,6 +68,12 @@
       "root": "libs/triangle/src",
       "test": "../../../test.js",
       "appRoot": ""
+    },
+    {
+      "name": "sparrow",
+      "root": "libs/sparrow/src",
+      "test": "../../../test.js",
+      "appRoot": ""
     }
   ],
   "e2e": {

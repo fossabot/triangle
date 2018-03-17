@@ -1,15 +1,17 @@
-import * as ERROR_MSGS from "../constants/error_msgs";
-import { BindingScopeEnum, BindingTypeEnum } from "../constants/literal_types";
-import { interfaces } from "../interfaces/interfaces";
-import { isStackOverflowExeption } from "../utils/exceptions";
-import { getServiceIdentifierAsString } from "../utils/serialization";
-import { resolveInstance } from "./instantiation";
+import * as ERROR_MSGS from '../constants/error-msgs';
+import { BindingScopeEnum, BindingTypeEnum } from '../constants/literal-types';
+import { FactoryCreator, Provider, RequestScope, ServiceIdentifier } from '../interfaces/interfaces';
+import { Context } from '../planning/context';
+import { Request } from '../planning/request';
+import { isStackOverflowExeption } from '../utils/exceptions';
+import { getServiceIdentifierAsString } from '../utils/serialization';
+import { resolveInstance } from './instantiation';
 
 type FactoryType = "toDynamicValue" | "toFactory" | "toAutoFactory" | "toProvider";
 
 const invokeFactory = (
     factoryType: FactoryType,
-    serviceIdentifier: interfaces.ServiceIdentifier<any>,
+    serviceIdentifier: ServiceIdentifier<any>,
     fn: () => any
 ) => {
     try {
@@ -25,8 +27,8 @@ const invokeFactory = (
     }
 };
 
-const _resolveRequest = (requestScope: interfaces.RequestScope) =>
-    (request: interfaces.Request): any => {
+const _resolveRequest = (requestScope: RequestScope) =>
+    (request: Request): any => {
 
     request.parentContext.setCurrentRequest(request);
 
@@ -43,7 +45,7 @@ const _resolveRequest = (requestScope: interfaces.RequestScope) =>
     if (targetIsAnArray && targetParentIsNotAnArray) {
 
         // Create an array instead of creating an instance
-        return childRequests.map((childRequest: interfaces.Request) => {
+        return childRequests.map((childRequest: Request) => {
             const _f = _resolveRequest(requestScope);
             return _f(childRequest);
         });
@@ -82,19 +84,19 @@ const _resolveRequest = (requestScope: interfaces.RequestScope) =>
             result = invokeFactory(
                 "toDynamicValue",
                 binding.serviceIdentifier,
-                () => (binding.dynamicValue as (context: interfaces.Context) => any)(request.parentContext)
+                () => (binding.dynamicValue as (context: Context) => any)(request.parentContext)
             );
         } else if (binding.type === BindingTypeEnum.Factory && binding.factory !== null) {
             result = invokeFactory(
                 "toFactory",
                 binding.serviceIdentifier,
-                () => (binding.factory as interfaces.FactoryCreator<any>)(request.parentContext)
+                () => (binding.factory as FactoryCreator<any>)(request.parentContext)
             );
         } else if (binding.type === BindingTypeEnum.Provider && binding.provider !== null) {
             result = invokeFactory(
                 "toProvider",
                 binding.serviceIdentifier,
-                () => (binding.provider as interfaces.Provider<any>)(request.parentContext)
+                () => (binding.provider as Provider<any>)(request.parentContext)
             );
         } else if (binding.type === BindingTypeEnum.Instance && binding.implementationType !== null) {
             result = resolveInstance(
@@ -133,7 +135,7 @@ const _resolveRequest = (requestScope: interfaces.RequestScope) =>
 
 };
 
-function resolve<T>(context: interfaces.Context): T {
+function resolve<T>(context: Context): T {
     const _f = _resolveRequest(context.plan.rootRequest.requestScope);
     return _f(context.plan.rootRequest);
 }

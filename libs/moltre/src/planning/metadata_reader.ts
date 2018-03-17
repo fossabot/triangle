@@ -1,29 +1,27 @@
-import * as METADATA_KEY from "../constants/metadata_keys";
-import { interfaces } from "../interfaces/interfaces";
+import { MetadataKeys } from '../constants/metadata-keys';
+import { ConstructorMetadata, MetadataMap } from '../interfaces/interfaces';
 
-class MetadataReader implements interfaces.MetadataReader {
+export class MetadataReader {
 
-    public getConstructorMetadata(constructorFunc: Function): interfaces.ConstructorMetadata {
+  public getConstructorMetadata(constructorFunc: Function): ConstructorMetadata {
 
-        // TypeScript compiler generated annotations
-        const compilerGeneratedMetadata = Reflect.getMetadata(METADATA_KEY.PARAM_TYPES, constructorFunc);
+    // TypeScript compiler generated annotations
+    const compilerGeneratedMetadata = Reflect.getMetadata(MetadataKeys.PARAM_TYPES, constructorFunc);
 
-        // User generated constructor annotations
-        const userGeneratedMetadata = Reflect.getMetadata(METADATA_KEY.TAGGED, constructorFunc);
+    // User generated constructor annotations
+    const userGeneratedMetadata = Reflect.getMetadata(MetadataKeys.TAGGED, constructorFunc);
 
-        return {
-            compilerGeneratedMetadata,
-            userGeneratedMetadata: userGeneratedMetadata || {}
-        };
+    return {
+      compilerGeneratedMetadata,
+      userGeneratedMetadata: userGeneratedMetadata || {}
+    };
 
-    }
+  }
 
-    public getPropertiesMetadata(constructorFunc: Function): interfaces.MetadataMap {
-        // User generated properties annotations
-        const userGeneratedMetadata =  Reflect.getMetadata(METADATA_KEY.TAGGED_PROP, constructorFunc) || [];
-        return userGeneratedMetadata;
-    }
+  public getPropertiesMetadata(constructorFunc: Function): MetadataMap {
+    // User generated properties annotations
+    const userGeneratedMetadata = Reflect.getMetadata(MetadataKeys.TAGGED_PROP, constructorFunc) || [];
+    return userGeneratedMetadata;
+  }
 
 }
-
-export { MetadataReader };

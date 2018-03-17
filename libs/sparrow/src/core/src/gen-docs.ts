@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import {Dgeni} from './Dgeni';
+import { Sparrow } from './sparrow';
 
 const path = require('canonical-path');
 const myArgs = require('optimist')
@@ -13,22 +13,22 @@ const packagePaths = myArgs._;
 
 // Require each of these packages and then create a new dgeni using them
 const packages = packagePaths.map((packagePath) => {
-  if ( packagePath.indexOf('.') === 0 ) {
+  if (packagePath.indexOf('.') === 0) {
     packagePath = path.resolve(packagePath);
   }
   return require(packagePath);
 });
 
 const logLevel = myArgs.log || myArgs.l;
-if ( logLevel ) {
+if (logLevel) {
   // Add CLI package (to override settings from other packages)
-  packages.push(new Dgeni.Package('cli-package').config((log) => {
+  packages.push(new Sparrow.Package('cli-package').config((log) => {
     // override log settings
     log.level = logLevel;
   }));
 }
 
-const dgeni = new Dgeni(packages);
+const dgeni = new Sparrow(packages);
 
 // Run the document generation
 dgeni.generate().then(() => {

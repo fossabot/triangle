@@ -1,13 +1,11 @@
 import { Binding } from "../bindings/binding";
-import * as ERROR_MSGS from "../constants/error_msgs";
-import { BindingScopeEnum, TargetTypeEnum } from "../constants/literal_types";
-import * as METADATA_KEY from "../constants/metadata_keys";
+import * as ERROR_MSGS from "../constants/error-msgs";
+import { BindingScopeEnum, TargetTypeEnum } from "../constants/literal-types";
+import * as METADATA_KEY from "../constants/metadata-keys";
 import { AsyncContainerModule, ContainerModule } from '../container/container_module';
 import {
   ContainerOptions,
   IContext,
-  IBinding,
-  IContainer,
   Middleware,
   Newable,
   Next,
@@ -27,23 +25,23 @@ import { Lookup } from "./lookup";
 export class Container {
 
     public guid: string;
-    public parent: IContainer | null;
+    public parent: Container | null;
     public readonly options: ContainerOptions;
     private _middleware: Next | null;
     private _bindingDictionary: Lookup<Binding<any>>;
     private _snapshots: ContainerSnapshot[];
     private _metadataReader: MetadataReader;
 
-    public static merge(container1: IContainer, container2: IContainer): IContainer {
+    public static merge(container1: Container, container2: Container): Container {
 
         const container = new Container();
-        const bindingDictionary: Lookup<IBinding<any>> = getBindingDictionary(container);
-        const bindingDictionary1: Lookup<IBinding<any>> = getBindingDictionary(container1);
-        const bindingDictionary2: Lookup<IBinding<any>> = getBindingDictionary(container2);
+        const bindingDictionary: Lookup<Binding<any>> = getBindingDictionary(container);
+        const bindingDictionary1: Lookup<Binding<any>> = getBindingDictionary(container1);
+        const bindingDictionary2: Lookup<Binding<any>> = getBindingDictionary(container2);
 
         function copyDictionary(
-            origin: Lookup<IBinding<any>>,
-            destination: Lookup<IBinding<any>>
+            origin: Lookup<Binding<any>>,
+            destination: Lookup<Binding<any>>
         ) {
 
             origin.traverse((key, value) => {
@@ -143,7 +141,7 @@ export class Container {
 
     public unload(...modules: ContainerModule[]): void {
 
-        const conditionFactory = (expected: any) => (item: IBinding<any>): boolean =>
+        const conditionFactory = (expected: any) => (item: Binding<any>): boolean =>
             item.moduleId === expected;
 
         modules.forEach((module) => {

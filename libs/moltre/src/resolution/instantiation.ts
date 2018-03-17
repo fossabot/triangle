@@ -1,8 +1,9 @@
-import { POST_CONSTRUCT_ERROR } from "../constants/error_msgs";
-import { TargetTypeEnum } from "../constants/literal_types";
-import * as METADATA_KEY from "../constants/metadata_keys";
-import { Newable, ResolveRequestHandler, Request } from '../interfaces/interfaces';
-import { Metadata } from "../planning/metadata";
+import { POST_CONSTRUCT_ERROR } from '../constants/error-msgs';
+import { TargetTypeEnum } from '../constants/literal-types';
+import { MetadataKeys } from '../constants/metadata-keys';
+import { Newable, ResolveRequestHandler } from '../interfaces/interfaces';
+import { Metadata } from '../planning/metadata';
+import { Request } from '../planning/request';
 
 function _injectProperties(instance: any,
                            childRequests: Request[],
@@ -32,8 +33,8 @@ function _createInstance(Func: Newable<any>, injections: Object[]): any {
 }
 
 function _postConstruct(constr: Newable<any>, result: any): void {
-  if (Reflect.hasMetadata(METADATA_KEY.POST_CONSTRUCT, constr)) {
-    const data: Metadata = Reflect.getMetadata(METADATA_KEY.POST_CONSTRUCT, constr);
+  if (Reflect.hasMetadata(MetadataKeys.POST_CONSTRUCT, constr)) {
+    const data: Metadata = Reflect.getMetadata(MetadataKeys.POST_CONSTRUCT, constr);
     try {
       result[data.value]();
     } catch (e) {

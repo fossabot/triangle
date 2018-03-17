@@ -1,7 +1,11 @@
-import * as ERROR_MSGS from "../constants/error_msgs";
-import { interfaces } from "../interfaces/interfaces";
+import { Binding } from '../bindings/binding';
+import * as ERROR_MSGS from '../constants/error-msgs';
+import { Container } from '../container/container';
+import { ServiceIdentifier } from '../interfaces/interfaces';
+import { Request } from '../planning/request';
+import { Target } from '../planning/target';
 
-function getServiceIdentifierAsString(serviceIdentifier: interfaces.ServiceIdentifier<any>): string {
+function getServiceIdentifierAsString(serviceIdentifier: ServiceIdentifier<any>): string {
     if (typeof serviceIdentifier === "function") {
         const _serviceIdentifier: any = serviceIdentifier;
         return _serviceIdentifier.name;
@@ -14,12 +18,12 @@ function getServiceIdentifierAsString(serviceIdentifier: interfaces.ServiceIdent
 }
 
 function listRegisteredBindingsForServiceIdentifier(
-    container: interfaces.Container,
+    container: Container,
     serviceIdentifier: string,
     getBindings: <T>(
-        container: interfaces.Container,
-        serviceIdentifier: interfaces.ServiceIdentifier<T>
-    ) => interfaces.Binding<T>[]
+        container: Container,
+        serviceIdentifier: ServiceIdentifier<T>
+    ) => Binding<T>[]
 ): string {
 
     let registeredBindingsList = "";
@@ -29,7 +33,7 @@ function listRegisteredBindingsForServiceIdentifier(
 
         registeredBindingsList = "\nRegistered bindings:";
 
-        registeredBindings.forEach((binding: interfaces.Binding<any>) => {
+        registeredBindings.forEach((binding: Binding<any>) => {
 
             // Use "Object as name of constant value injections"
             let name = "Object";
@@ -53,8 +57,8 @@ function listRegisteredBindingsForServiceIdentifier(
 }
 
 function alreadyDependencyChain(
-    request: interfaces.Request,
-    serviceIdentifier: interfaces.ServiceIdentifier<any>
+    request: Request,
+    serviceIdentifier: ServiceIdentifier<any>
 ): boolean {
     if (request.parentRequest === null) {
         return false;
@@ -66,11 +70,11 @@ function alreadyDependencyChain(
 }
 
 function dependencyChainToString(
-    request: interfaces.Request
+    request: Request
 ) {
 
     function _createStringArr(
-        req: interfaces.Request,
+        req: Request,
         result: string[] = []
     ): string[] {
         const serviceIdentifier = getServiceIdentifierAsString(req.serviceIdentifier);
@@ -87,7 +91,7 @@ function dependencyChainToString(
 }
 
 function circularDependencyToException(
-    request: interfaces.Request
+    request: Request
 ) {
     request.childRequests.forEach((childRequest) => {
         if (alreadyDependencyChain(childRequest, childRequest.serviceIdentifier)) {
@@ -99,7 +103,7 @@ function circularDependencyToException(
     });
 }
 
-function listMetadataForTarget(serviceIdentifierString: string, target: interfaces.Target): string {
+function listMetadataForTarget(serviceIdentifierString: string, target: Target): string {
     if (target.isTagged() || target.isNamed()) {
 
         let m = "";

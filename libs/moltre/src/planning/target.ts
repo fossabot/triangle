@@ -1,21 +1,21 @@
-import * as METADATA_KEY from "../constants/metadata_keys";
-import { interfaces } from "../interfaces/interfaces";
-import { guid } from "../utils/guid";
-import { Metadata } from "./metadata";
-import { QueryableString } from "./queryable_string";
+import { ServiceIdentifier, TargetType } from '../interfaces/interfaces';
+import { MetadataKeys } from '../constants/metadata-keys';
+import { guid } from '../utils/guid';
+import { Metadata } from './metadata';
+import { QueryableString } from './queryable_string';
 
-class Target implements interfaces.Target {
+class Target {
 
     public guid: string;
-    public type: interfaces.TargetType;
-    public serviceIdentifier: interfaces.ServiceIdentifier<any>;
-    public name: interfaces.QueryableString;
+    public type: TargetType;
+    public serviceIdentifier: ServiceIdentifier<any>;
+    public name: QueryableString;
     public metadata: Metadata[];
 
     public constructor(
-        type: interfaces.TargetType,
+        type: TargetType,
         name: string,
-        serviceIdentifier: interfaces.ServiceIdentifier<any>,
+        serviceIdentifier: ServiceIdentifier<any>,
         namedOrTagged?: (string | Metadata)
     ) {
 
@@ -25,11 +25,11 @@ class Target implements interfaces.Target {
         this.name = new QueryableString(name || "");
         this.metadata = new Array<Metadata>();
 
-        let metadataItem: interfaces.Metadata | null = null;
+        let metadataItem: Metadata | null = null;
 
         // is named target
         if (typeof namedOrTagged === "string") {
-            metadataItem = new Metadata(METADATA_KEY.NAMED_TAG, namedOrTagged);
+            metadataItem = new Metadata(MetadataKeys.NAMED_TAG, namedOrTagged);
         } else if (namedOrTagged instanceof Metadata) {
             // is target with metadata
             metadataItem = namedOrTagged;
@@ -52,51 +52,51 @@ class Target implements interfaces.Target {
     }
 
     public isArray(): boolean {
-        return this.hasTag(METADATA_KEY.MULTI_INJECT_TAG);
+        return this.hasTag(MetadataKeys.MULTI_INJECT_TAG);
     }
 
-    public matchesArray(name: interfaces.ServiceIdentifier<any>): boolean {
-        return this.matchesTag(METADATA_KEY.MULTI_INJECT_TAG)(name);
+    public matchesArray(name: ServiceIdentifier<any>): boolean {
+        return this.matchesTag(MetadataKeys.MULTI_INJECT_TAG)(name);
     }
 
     public isNamed(): boolean {
-        return this.hasTag(METADATA_KEY.NAMED_TAG);
+        return this.hasTag(MetadataKeys.NAMED_TAG);
     }
 
     public isTagged(): boolean {
         return this.metadata.some((m) =>
-            (m.key !== METADATA_KEY.INJECT_TAG) &&
-                   (m.key !== METADATA_KEY.MULTI_INJECT_TAG) &&
-                   (m.key !== METADATA_KEY.NAME_TAG) &&
-                   (m.key !== METADATA_KEY.UNMANAGED_TAG) &&
-                   (m.key !== METADATA_KEY.NAMED_TAG));
+            (m.key !== MetadataKeys.INJECT_TAG) &&
+                   (m.key !== MetadataKeys.MULTI_INJECT_TAG) &&
+                   (m.key !== MetadataKeys.NAME_TAG) &&
+                   (m.key !== MetadataKeys.UNMANAGED_TAG) &&
+                   (m.key !== MetadataKeys.NAMED_TAG));
     }
 
     public isOptional(): boolean {
-        return this.matchesTag(METADATA_KEY.OPTIONAL_TAG)(true);
+        return this.matchesTag(MetadataKeys.OPTIONAL_TAG)(true);
     }
 
-    public getNamedTag(): interfaces.Metadata | null {
+    public getNamedTag(): Metadata | null {
         if (this.isNamed()) {
-            return this.metadata.filter((m) => m.key === METADATA_KEY.NAMED_TAG)[0];
+            return this.metadata.filter((m) => m.key === MetadataKeys.NAMED_TAG)[0];
         }
         return null;
     }
 
-    public getCustomTags(): interfaces.Metadata[] | null {
+    public getCustomTags(): Metadata[] | null {
         if (this.isTagged()) {
             return this.metadata.filter((m) =>
-                (m.key !== METADATA_KEY.INJECT_TAG) &&
-                    (m.key !== METADATA_KEY.MULTI_INJECT_TAG) &&
-                    (m.key !== METADATA_KEY.NAME_TAG) &&
-                    (m.key !== METADATA_KEY.UNMANAGED_TAG) &&
-                    (m.key !== METADATA_KEY.NAMED_TAG));
+                (m.key !== MetadataKeys.INJECT_TAG) &&
+                    (m.key !== MetadataKeys.MULTI_INJECT_TAG) &&
+                    (m.key !== MetadataKeys.NAME_TAG) &&
+                    (m.key !== MetadataKeys.UNMANAGED_TAG) &&
+                    (m.key !== MetadataKeys.NAMED_TAG));
         }
         return null;
     }
 
     public matchesNamedTag(name: string): boolean {
-        return this.matchesTag(METADATA_KEY.NAMED_TAG)(name);
+        return this.matchesTag(MetadataKeys.NAMED_TAG)(name);
     }
 
     public matchesTag(key: string) {

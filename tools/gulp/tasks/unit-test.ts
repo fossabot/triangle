@@ -1,6 +1,6 @@
-import {join} from 'path';
-import {task, watch} from 'gulp';
-import {buildConfig, sequenceTask} from 'material2-build-tools';
+import { join } from 'path';
+import { task, watch } from 'gulp';
+import { buildConfig, sequenceTask } from 'material2-build-tools';
 
 // There are no type definitions available for these imports.
 const runSequence = require('run-sequence');
@@ -8,18 +8,16 @@ const runSequence = require('run-sequence');
 // Default Karma options.
 const defaultOptions = {
   configFile: join(buildConfig.projectDir, 'test/karma.conf.js'),
-  autoWatch: false,
-  singleRun: false
+  autoWatch : false,
+  singleRun : false
 };
 
 /** Builds everything that is necessary for karma. */
 task(':test:build', sequenceTask(
   'clean',
-  'cdk:build-no-bundles',
-  'material:build-no-bundles',
-  'cdk-experimental:build-no-bundles',
-  'material-experimental:build-no-bundles',
-  'material-moment-adapter:build-no-bundles'
+  'triangle:build-no-bundles',
+  'sparrow:build-no-bundles',
+  'moltre:build-no-bundles'
 ));
 
 /**

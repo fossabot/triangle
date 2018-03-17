@@ -1,5 +1,6 @@
-const _ = require('lodash');
-const {DepGraph} = require('dependency-graph');
+import _ from 'lodash';
+import { DepGraph } from 'dependency-graph';
+
 
 /**
  * @name  sortByDependency
@@ -21,16 +22,16 @@ export function sortByDependency(items: Object | any[], afterProp?: string, befo
   let map = {};
   let depGraph = new DepGraph();
 
-  let addDependencies = function(item, dependencyProp, addBefore: boolean = false) {
-    if ( dependencyProp && item[dependencyProp]) {
-      if ( !Array.isArray(item[dependencyProp]) ) {
+  let addDependencies = function (item, dependencyProp, addBefore: boolean = false) {
+    if (dependencyProp && item[dependencyProp]) {
+      if (!Array.isArray(item[dependencyProp])) {
         throw new Error('Error in item "' + item[nameProp] + '" - ' + dependencyProp + ' must be an array');
       }
-      item[dependencyProp].forEach(function(dependency) {
-        if ( !map[dependency] ) {
+      item[dependencyProp].forEach(function (dependency) {
+        if (!map[dependency]) {
           throw new Error('Missing dependency: "' + dependency + '"  on "' + item[nameProp] + '"');
         }
-        if ( addBefore ) {
+        if (addBefore) {
           depGraph.addDependency(dependency, item[nameProp]);
         } else {
           depGraph.addDependency(item[nameProp], dependency);
@@ -39,8 +40,8 @@ export function sortByDependency(items: Object | any[], afterProp?: string, befo
     }
   };
 
-  _.forEach(items, function(item, index) {
-    if ( !item[nameProp] ) {
+  _.forEach(items, function (item, index) {
+    if (!item[nameProp]) {
       throw new Error('Missing ' + nameProp + ' property on item #' + (index + 1));
     }
     map[item[nameProp]] = item;
@@ -48,12 +49,12 @@ export function sortByDependency(items: Object | any[], afterProp?: string, befo
   });
 
 
-  _.forEach(items, function(item) {
+  _.forEach(items, function (item) {
     addDependencies(item, afterProp);
     addDependencies(item, beforeProp, true);
   });
 
-  return depGraph.overallOrder().map(function(itemName) {
+  return depGraph.overallOrder().map(function (itemName) {
     return map[itemName];
   });
 }
