@@ -76,7 +76,7 @@
     "gulp-markdown": "^2.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-replace": "^0.6.1",
-    "gulp-sass": "^3.1.0",
+    "gulp-sass": "^4.0.0",
     "gulp-transform": "^3.0.5",
     "http-rewrite-middleware": "^0.1.6",
     "jasmine-core": "~3.1.0",
