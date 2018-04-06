@@ -30,7 +30,7 @@
     "@ngrx/router-store": "^5.0.1",
     "@ngrx/store": "^5.1.0",
     "@ngrx/store-devtools": "^5.1.0",
-    "@nrwl/nx": "^0.8.0",
+    "@nrwl/nx": "^0.10.1",
     "bootstrap": "^4.0.0",
     "core-js": "^2.5.3",
     "global": "^4.3.2",
