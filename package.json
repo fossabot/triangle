@@ -44,7 +44,7 @@
   "devDependencies": {
     "@angular/cli": "^1.6.8",
     "@angular/compiler-cli": "^5.2.5",
-    "@angular/material": "^5.2.3",
+    "@angular/material": "^6.2.0",
     "@angular/service-worker": "^5.2.5",
     "@nrwl/schematics": "^0.8.0",
     "@types/chalk": "^2.2.0",
